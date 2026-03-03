@@ -94,6 +94,42 @@ contract UniV2ArchTest is Test {
     }
 
 
+    function test_swap_eth_for_usdc()public {
+        address pairAddress = factory.getPair(WETH, USDC);
+        IUniswapV2Pair pair = IUniswapV2Pair(pairAddress);
+
+        // reserves before the swap
+        (uint112 reserve0Before, uint112 reserve1Before, ) = pair.getReserves();
+
+
+        address[] memory path = new address[](2);
+        path[0] = WETH;
+        path[1] = USDC;
+
+        uint deadline = block.timestamp + 1 hours;
+
+        router.swapExactETHForTokens{value : 1 ether}(0, path, address(this),deadline);
+
+        // reserves after
+        (uint112 reserve0After, uint112 reserve1After,) = pair.getReserves();
+
+        emit log_named_uint("USDC reserve before (reserve 0)", reserve0Before);
+        emit log_named_uint("WETH reserve before (reserve 1)", reserve1Before);
+
+        emit log_named_uint("USDC reserve after (reserve 0)", reserve0After);
+        emit log_named_uint("WETH reserve after (reserve 1)", reserve1After);
+
+        // If token0 is USDC and token1 is WETH:
+    // Buying USDC means USDC reserve decreases, WETH reserve increases
+    assertTrue(reserve0After < reserve0Before, "USDC reserve should go DOWN");
+    assertTrue(reserve1After > reserve1Before, "WETH reserve should go UP");
+
+        
+
+        
+    }
+
+
 
 
 
