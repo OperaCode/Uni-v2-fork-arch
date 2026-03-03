@@ -70,6 +70,12 @@ function test_fork_runs() public {
     assertTrue(block.number > 0);
 }
 
+function test_factory_finds_pair()public{
+    address pair = factory.getPair(WETH,USDC);
+    emit log_named_address("WETH/USDC Pair", pair);
+    assertTrue(pair != address(0));
+}
+
 
 
 
