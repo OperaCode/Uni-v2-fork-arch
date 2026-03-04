@@ -78,7 +78,7 @@ contract UniV2ArchTest is Test {
 
 
 
-    // test to check the reserves of the WETH/USDC pair
+    // test to check the reserves of the WETH/USDC pair - if liquidity is present.
     function test_pair_reserves() public {
         address pairAddress = factory.getPair(WETH, USDC);
         IUniswapV2Pair pair = IUniswapV2Pair(pairAddress);
